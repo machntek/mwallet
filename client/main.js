@@ -7,17 +7,6 @@ import {
 
 import './main.html';
 
-Accounts.ui.config({
-  passwordSignupFields: 'USERNAME_ONLY'
-  /*
-  extraSignupFields: [{
-      fieldName: "username",
-      fieldLabel: "username",
-      inputType: 'text'
-  }]
-  */
-});
-
 Wallets = new Mongo.Collection('wallets');
 Price = new Mongo.Collection('price');
 client = new CoinStack('c7dbfacbdf1510889b38c01b8440b1', '10e88e9904f29c98356fd2d12b26de');
