@@ -89,9 +89,10 @@ Template.walletdetail.helpers({
 Template.walletdetail.events({
   "submit .new-task": function (event) {
     event.preventDefault();
-    var text = event.target.text.value;
+    var bitcoin = event.target.text.value;
+    // var friendAddress = '';
   
-    Meteor.call("transactionBitcoin", text);
+    Meteor.call("transactionBitcoin", bitcoin);
     event.target.text.value = "";
  },
 });
