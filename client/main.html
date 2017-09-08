@@ -668,7 +668,7 @@
 </template>
 <template name="walletdetail">
   <div class="row" align="center">
-    {{price}} {{#if Template.subscriptionsReady}} {{mywallet.label}} {{/if}}
+    {{bitcoinprice}} {{#if Template.subscriptionsReady}} {{mywallet.label}} {{/if}}
   </div>
   <div class="row" align="center">
     {{mywalletbalance}} BTC
@@ -678,6 +678,16 @@
     </p>
     {{walletaddress}}
   </div>
-  <div class="table-responsive">
-  </div>
+
+  <div class="row" align="center">
+      <a href="" >Your Friends List</a> 
+    </div>
+
+    <form class = "new-task" align="center" >
+        <input type = "text" name = "text" placeholder = "input the bitcoin" />
+     </form>
+   
+
+    
+  
 </template>

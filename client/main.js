@@ -80,14 +80,18 @@ Template.walletdetail.helpers({
     var address = FlowRouter.getParam('walletAdderss');
     return Session.get(address + 'balance');
   },
-  price() {
+  bitcoinprice() {
     return Price.findOne({_id:'btc_bithumb'}).price;
   }
 });
-/*
-Template.walletdetail.events({
-  'click [name="wallet"]' (event, instance) {
 
-  },
+
+Template.walletdetail.events({
+  "submit .new-task": function (event) {
+    event.preventDefault();
+    var text = event.target.text.value;
+  
+    Meteor.call("transactionBitcoin", text);
+    event.target.text.value = "";
+ },
 });
-*/

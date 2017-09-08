@@ -17,15 +17,6 @@ Wallets = new Mongo.Collection('wallets');
 Price = new Mongo.Collection('price');
 
 Meteor.startup(() => {
-  var data = CoinStack.ECKey.createKey();
-  var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), 'secret key 123');
-
-  // Decrypt 
-  var bytes = CryptoJS.AES.decrypt(ciphertext.toString(), 'secret key 123');
-  var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-  console.log(decryptedData);
-
-
   //console.log(ciphertext);
 
   var walletsCnt = Wallets.find().count();
@@ -47,8 +38,8 @@ Meteor.startup(() => {
 
   Meteor.setInterval(function () {
     console.log('timer');
-    HTTP.get('https://api.bithumb.com/public/ticker', {}, function(err, data){
-      if(err){
+    HTTP.get('https://api.bithumb.com/public/ticker', {}, function (err, data) {
+      if (err) {
         console.log('으악 에러남');
         return false;
       }
@@ -56,16 +47,16 @@ Meteor.startup(() => {
       var btc_price = data.data.data.closing_price;
       console.log(btc_price);
       Price.upsert({
-        _id:'btc_bithumb'
+        _id: 'btc_bithumb'
       }, {
-        price: btc_price
-      });
+          price: btc_price
+        });
     });
   }, 100000);
 });
 
 Meteor.methods({
-  'getBalance' ({
+  'getBalance'({
     address
   }) {
     console.log('check balance: ' + address);
@@ -73,7 +64,7 @@ Meteor.methods({
     console.log('check balance: ' + balance);
     return balance;
   },
-  'getTxHistory' ({
+  'getTxHistory'({
     address
   }) {
     console.log('check balance: ' + address);
