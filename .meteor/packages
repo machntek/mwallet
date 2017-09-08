@@ -25,5 +25,6 @@ kadira:blaze-layout
 mrt:qrcodesvg
 session
 http
-spectrum:accounts-kakao
+#spectrum:accounts-kakao
+ian:accounts-ui-bootstrap-3
 accounts-ui
