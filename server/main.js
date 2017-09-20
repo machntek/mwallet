@@ -9,10 +9,12 @@ import {
 } from 'meteor/http'
 var CryptoJS = require("crypto-js");
 
-client = new CoinStack('c7dbfacbdf1510889b38c01b8440b1', '10e88e9904f29c98356fd2d12b26de');
-client.endpoint = "13.124.21.0:8080";
-client.protocol = 'http://';
+var client = new CoinStack('c7dbfacbdf1510889b38c01b8440b1', '10e88e9904f29c98356fd2d12b26de');
+client.endpoint = "testchain.blocko.io";
+client.protocol = "http://";
 
+var myAddress = "17iZeCxT5tdL6ZNLirGVfNspgXiSN8yKo6";
+var privateKey = "KzNe5FueW7abygTdDDyfizKPmCe36ebgGmixpZXaHST7i3Sxa6Aq";
 Wallets = new Mongo.Collection('wallets');
 Price = new Mongo.Collection('price');
 
@@ -56,20 +58,41 @@ Meteor.startup(() => {
 });
 
 Meteor.methods({
-  'getBalance'({
-    address
-  }) {
-    console.log('check balance: ' + address);
-    var balance = CoinStack.Math.toBitcoin(client.getBalanceSync(address));
+  getBalance: function(f_ddress) {
+    console.log('check balance: ' + f_ddress);
+    var balance = CoinStack.Math.toBitcoin(client.getBalanceSync(f_ddress));
     console.log('check balance: ' + balance);
     return balance;
   },
-  'getTxHistory'({
-    address
-  }) {
-    console.log('check balance: ' + address);
-    client.getTransactionsSync(address);
+  getTxHistory: function(f_address) {
+    console.log('check balance: ' + f_address);
+    client.getTransactionsSync(f_address);
     //console.log('check balance: ' + balance);
     return balance;
+  },
+  transactionBitcoin: function(bitcoin, f_address) {
+    console.log('check address: ' + f_address);
+    // client.getTransactionsSync(address);
+    console.log('check balance: ' + bitcoin);
+
+    var txBuilder = client.createTransactionBuilder();
+    txBuilder.addOutput(f_address, CoinStack.Math.toSatoshi(bitcoin));
+    txBuilder.setInput(myAddress);
+    txBuilder.setFee(CoinStack.Math.toSatoshi("0.0001"));
+
+    var tx = client.buildTransactionSync(txBuilder);
+    tx.sign(privateKey);
+    var rawSignedTx = tx.serialize();
+    console.log(rawSignedTx);
+
+    try {
+
+        // send tx
+        client.sendTransactionSync(rawSignedTx);
+    } catch (e) {
+        console.log("failed to send tx");
+    }
+    var balance = CoinStack.Math.toBitcoin(client.getBalanceSync(myAddress));
+    console.log('my Wallet: ' + balance);
   }
 });
